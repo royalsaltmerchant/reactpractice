@@ -128,7 +128,7 @@ myClick() {
                             <li>{this.state.tog === "on" ? 'Temp_Min: ' + this.state.maintempmin : null}</li>
                             <li>{this.state.tog === "on" ? 'Temp_Max: ' + this.state.maintempmax : null}</li>
                             <li>{this.state.tog === "on" ? 'Pressure: ' + this.state.mainpressure : null}</li>
-                            <li>{this.state.tog === "on" ? 'Humdiity: ' + this.state.mainhumidity : null}</li>
+                            <li>{this.state.tog === "on" ? 'Humdity: ' + this.state.mainhumidity : null}</li>
                         </ul>
                         </li>
                         <br/>
