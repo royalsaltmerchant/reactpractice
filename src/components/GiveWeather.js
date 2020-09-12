@@ -115,15 +115,15 @@ myClick() {
                         <li className={this.state.classoutli}>{this.state.tog === "on" ? 'Weather:' : null}
                         <ul className={this.state.classinner}>
                             <li>{this.state.tog === "on" ? 'ID: ' + this.state.weatherid : null}</li>
-                            <li>{this.state.tog === "on" ? 'Latitude: ' + this.state.weathermain : null}</li>
-                            <li>{this.state.tog === "on" ? 'longitude: ' + this.state.weatherdescription : null}</li>
-                            <li>{this.state.tog === "on" ? 'longitude: ' + this.state.weathericon : null}</li>
+                            <li>{this.state.tog === "on" ? 'Main: ' + this.state.weathermain : null}</li>
+                            <li>{this.state.tog === "on" ? 'Description: ' + this.state.weatherdescription : null}</li>
+                            <li>{this.state.tog === "on" ? 'Icon: ' + this.state.weathericon : null}</li>
                         </ul>
                         </li>
                         <br/>
                         <li className={this.state.classoutli}>{this.state.tog === "on" ? 'Main:' : null}
                         <ul className={this.state.classinner}>
-                            <li>{this.state.tog === "on" ? 'Temp: ' + this.state.weathermaintemp : null}</li>
+                            <li>{this.state.tog === "on" ? 'Temp: ' + this.state.maintemp : null}</li>
                             <li>{this.state.tog === "on" ? 'Feels_Like: ' + this.state.mainfeelslike : null}</li>
                             <li>{this.state.tog === "on" ? 'Temp_Min: ' + this.state.maintempmin : null}</li>
                             <li>{this.state.tog === "on" ? 'Temp_Max: ' + this.state.maintempmax : null}</li>
@@ -152,7 +152,7 @@ myClick() {
                         <li className={this.state.classoutli}>{this.state.tog === "on" ? 'Sys:' : null}
                         <ul className={this.state.classinner}>
                             <li>{this.state.tog === "on" ? 'Type: ' + this.state.systype : null}</li>
-                            <li>{this.state.tog === "on" ? 'ID: ' + this.sysid : null}</li>
+                            <li>{this.state.tog === "on" ? 'ID: ' + this.sys.sysid : null}</li>
                             <li>{this.state.tog === "on" ? 'Country: ' + this.state.syscountry : null}</li>
                             <li>{this.state.tog === "on" ? 'Sunrise: ' + this.state.syssunrise : null}</li>
                             <li>{this.state.tog === "on" ? 'Sunset: ' + this.state.syssunset : null}</li>
