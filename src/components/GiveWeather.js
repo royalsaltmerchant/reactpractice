@@ -58,19 +58,19 @@ class GiveWeather extends React.Component {
                     maintempmin: [data['main']['temp_min']],
                     maintempmax: [data['main']['temp_max']],
                     mainpressure: [data['main']['pressure']],
-                    mainhumidity: [data['main']['pressure']],
+                    mainhumidity: [data['main']['humidity']],
                     visibility: [data['visibility']],
                     windspeed: [data['wind']['speed']],
                     winddeg: [data['wind']['deg']],
                     cloudsall: [data['clouds']['all']],
                     dt: [data['dt']],
-                    systype: ['sys'['type']],
+                    systype: [data['sys']['type']],
                     sysid: [data['sys']['id']],
                     syscountry: [data['sys']['country']],
                     syssunrise: [data['sys']['sunrise']],
                     syssunset: [data['sys']['sunset']],
                     timezone: [data['timezone']],
-                    id: [data['id']],
+                    thisid: [data['id']],
                     cod: [data['cod']]
 
                 })
@@ -136,8 +136,8 @@ myClick() {
                         <br/>
                         <li className={this.state.classoutli}>{this.state.tog === "on" ? 'Wind:' : null}
                         <ul className={this.state.classinner}>
-                            <li>{this.state.tog === "on" ? 'Speed: ' + this.state.coordlon : null}</li>
-                            <li>{this.state.tog === "on" ? 'Deg: ' + this.state.coordlat : null}</li>
+                            <li>{this.state.tog === "on" ? 'Speed: ' + this.state.windspeed : null}</li>
+                            <li>{this.state.tog === "on" ? 'Deg: ' + this.state.winddeg : null}</li>
                         </ul>
                         </li>
                         <br/>
@@ -152,7 +152,7 @@ myClick() {
                         <li className={this.state.classoutli}>{this.state.tog === "on" ? 'Sys:' : null}
                         <ul className={this.state.classinner}>
                             <li>{this.state.tog === "on" ? 'Type: ' + this.state.systype : null}</li>
-                            <li>{this.state.tog === "on" ? 'ID: ' + this.sys.sysid : null}</li>
+                            <li>{this.state.tog === "on" ? 'ID: ' + this.state.sysid : null}</li>
                             <li>{this.state.tog === "on" ? 'Country: ' + this.state.syscountry : null}</li>
                             <li>{this.state.tog === "on" ? 'Sunrise: ' + this.state.syssunrise : null}</li>
                             <li>{this.state.tog === "on" ? 'Sunset: ' + this.state.syssunset : null}</li>
@@ -161,7 +161,7 @@ myClick() {
                         <br/>
                         <li className={this.state.classoutli}>{this.state.tog === "on" ? 'Timezone: ' + this.state.timezone : null}</li>
                         <br/>
-                        <li className={this.state.classoutli}>{this.state.tog === "on" ? 'ID: ' + this.state.id : null}</li>
+                        <li className={this.state.classoutli}>{this.state.tog === "on" ? 'ID: ' + this.state.thisid : null}</li>
                         <br/>
                         <li className={this.state.classoutli}>{this.state.tog === "on" ? 'Cod: ' + this.state.cod : null}</li>
                         <br/>
