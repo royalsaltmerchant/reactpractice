@@ -7,25 +7,23 @@ class GiveWeather2 extends React.Component {
         super()
         this.state = {
             tog: 'off',
-            loading: true
+            loading: false
         }
     this.myClick = this.myClick.bind(this)
-    }
-
-    componentDidMount() {
-        
     }
 
 myClick() {
     console.log(this.state.tog)
     if(this.state.tog === "off") {
         this.setState({
-            tog: 'on'
+            tog: 'on',
+            loading: true
         })
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 this.setState({
+                    loading: false,
                     name: [data['name']],
                     coordlon: [data['coord']['lon']],
                     coordlat: [data['coord']['lat']],
@@ -33,6 +31,7 @@ myClick() {
                     weathermain: [data['weather'][0]['main']],
                     weatherdescription: [data['weather'][0]['description']],
                     weathericon: [data['weather'][0]['icon']],
+                    base: [data['base']],
                     maintemp: [data['main']['temp']],
                     mainfeelslike: [data['main']['feels_like']],
                     maintempmin: [data['main']['temp_min']],
@@ -63,10 +62,24 @@ myClick() {
 }
 
     render() {
+
+        // var imgurl = 'http://openweathermap.org/img/wn' + this.state.weathericon + '@2x.png';
+        // console.log(imgurl);
+        // console.log(this.state.weathericon);
+
         let toggleStyle = {
             display: 'none'
         }
-        if(this.state.tog === "on") {
+        let loadinginfo = {
+            display: 'none',
+        }
+
+        if(this.state.loading === true) {
+            loadinginfo = {
+                display: 'block'
+            }
+        }
+        else if(this.state.tog === "on") {
             toggleStyle = {
                 display: 'flex'
             }
@@ -75,6 +88,7 @@ myClick() {
             <div>
                 <div className="buttoning">
                 <button onClick={this.myClick}>Get Weather</button>
+                <p class="loadinginfo" style={loadinginfo}>Loading...</p>
                 </div>
 
                 <div style={toggleStyle}>
@@ -96,6 +110,8 @@ myClick() {
                             <li>Icon: {this.state.weathericon}</li>
                         </ul>
                         </li>
+                        <br/>
+                        <li className="outli">Base:{this.state.base}</li>
                         <br/>
                         <li className="outli">Main: 
                         <ul className="inner">
