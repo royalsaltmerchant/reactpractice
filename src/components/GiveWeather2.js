@@ -153,7 +153,7 @@ myClick() {
                         <input type="radio" name="units" value="kelvin"> 
                         </input>
                     </div>
-                    <p className="chooseunit" style={chooseunit}>*Please choose a unit of measurement</p>
+                    <p className="chooseunitstyle" style={chooseunit}>*Please choose a unit of measurement</p>
                 </div>
 
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
