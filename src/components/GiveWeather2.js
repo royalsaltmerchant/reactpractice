@@ -63,9 +63,9 @@ myClick() {
 
     render() {
 
-        // var imgurl = 'http://openweathermap.org/img/wn' + this.state.weathericon + '@2x.png';
-        // console.log(imgurl);
-        // console.log(this.state.weathericon);
+        var imgurl = 'http://openweathermap.org/img/wn/' + this.state.weathericon + '@2x.png';
+        console.log(imgurl);
+        console.log(this.state.weathericon);
 
         let toggleStyle = {
             display: 'none'
@@ -88,7 +88,7 @@ myClick() {
             <div>
                 <div className="buttoning">
                 <button onClick={this.myClick}>Get Weather</button>
-                <p class="loadinginfo" style={loadinginfo}>Loading...</p>
+                <p className="loadinginfo" style={loadinginfo}>Loading...</p>
                 </div>
 
                 <div style={toggleStyle}>
@@ -107,7 +107,7 @@ myClick() {
                             <li>ID: {this.state.weatherid}</li>
                             <li>Main: {this.state.weathermain}</li>
                             <li>Description: {this.state.weatherdescription}</li>
-                            <li>Icon: {this.state.weathericon}</li>
+                            <li><img src={imgurl} alt="icon"></img></li>
                         </ul>
                         </li>
                         <br/>
