@@ -34,13 +34,13 @@ onChangeRadio(event) {
 
 myClick() {
     console.log(this.state.tog)
-
-    if(this.state.unitprompt === false) {
+    console.log(this.state.unitprompt)
+    if(this.state.unitprompt === false && url === '') {
         this.setState({
             unitprompt: true
         })
     }
-    else if (this.state.unitprompt === true & url !== '') {
+    else if (this.state.unitprompt === true) {
         this.setState({
             unitprompt: false
         })
