@@ -18,7 +18,7 @@ class GiveWeather2 extends React.Component {
     }
 //
 
-//events
+//Events
 onChangeRadio(event) {
     console.log(event.target.value)
     if(event.target.value === 'fahrenheit') {
