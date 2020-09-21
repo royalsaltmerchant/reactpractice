@@ -1,23 +1,43 @@
 import React from 'react'
 
-var url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&units=imperial&appid=6b04193aa2d1531aa6072e2ba7eca3c8';
+//main var for fetch url 
+var url = '';
 
+//class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
         super()
         this.state = {
             tog: 'off',
-            loading: false
+            loading: false,
+            buttontext: 'Get Weather'
         }
     this.myClick = this.myClick.bind(this)
+    this.onChangeValue = this.onChangeValue.bind(this)
     }
+//
+
+//events
+onChangeValue(event) {
+    console.log(event.target.value)
+    if(event.target.value === 'fahrenheit') {
+        url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&units=imperial&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+    }
+    else if(event.target.value === 'celsius') {
+        url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&units=metric&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+    }
+    else {
+        url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+    }
+}
 
 myClick() {
     console.log(this.state.tog)
     if(this.state.tog === "off") {
         this.setState({
             tog: 'on',
-            loading: true
+            loading: true,
+            buttontext: 'Stop Weather'
         })
         fetch(url)
             .then(response => response.json())
@@ -56,16 +76,16 @@ myClick() {
             })
     } else if (this.state.tog === 'on') {
         this.setState({
-            tog: 'off'
+            tog: 'off',
+            buttontext: 'Get Weather'
         })
     }
 }
-
+//end of events
+//Render
     render() {
 
         var imgurl = 'http://openweathermap.org/img/wn/' + this.state.weathericon + '@2x.png';
-        console.log(imgurl);
-        console.log(this.state.weathericon);
 
         let toggleStyle = {
             display: 'none'
@@ -86,8 +106,28 @@ myClick() {
         }
         return (
             <div>
+                
                 <div className="buttoning">
-                <button onClick={this.myClick}>Get Weather</button>
+                <button onClick={this.myClick}>{this.state.buttontext}</button>
+                <br/>
+                <div className="radiounits" onChange={this.onChangeValue}>
+                    <div>
+                    <label htmlFor="fahrenheit">Fahrenheit</label>
+                        <input type="radio" name="units" value="fahrenheit"> 
+                        </input>
+                    </div>
+                    <div>
+                    <label htmlFor="celsius">Celsius</label>
+                        <input type="radio" name="units" value="celsius"> 
+                        </input>
+                    </div>
+                    <div>
+                    <label htmlFor="kelvin">Kelvin</label>
+                        <input type="radio" name="units" value="kelvin"> 
+                        </input>
+                    </div>
+                </div>
+
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
                 </div>
 
@@ -111,9 +151,7 @@ myClick() {
                         </ul>
                         </li>
                         <br/>
-                        <li className="outli">Base:{this.state.base}</li>
-                        <br/>
-                        <li className="outli">Main: 
+                        <li className="outli">Temperature: 
                         <ul className="inner">
                             <li>Temp: {this.state.maintemp}</li>
                             <li>Feels_Like: {this.state.mainfeelslike}</li>
@@ -139,9 +177,7 @@ myClick() {
                         </ul>
                         </li>
                         <br/>
-                        <li className="outli">DT: {this.state.dt}</li>
-                        <br/>
-                        <li className="outli">Sys: 
+                        {/* <li className="outli">Sys: 
                         <ul className="inner">
                             <li>Type: {this.state.systype}</li>
                             <li>ID: {this.state.sysid}</li>
@@ -150,13 +186,13 @@ myClick() {
                             <li>Sunset: {this.state.syssunset}</li>
                         </ul>
                         </li>
-                        <br/>
+                        <br/> */}
                         <li className="outli">Timezone: {this.state.timezone}</li>
                         <br/>
-                        <li className="outli">ID: {this.state.thisid}</li>
+                        {/* <li className="outli">ID: {this.state.thisid}</li>
                         <br/>
                         <li className="outli">Cod: {this.state.cod}</li>
-                        <br/>
+                        <br/> */}
                     </ul>
                 </div>
                     
@@ -164,5 +200,6 @@ myClick() {
         )
     }
 }
-
+//end render
+//export
 export default GiveWeather2;
