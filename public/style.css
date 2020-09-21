@@ -53,3 +53,7 @@ button {
 .loadinginfo {
     font-size: 40px;
 }
+
+.chooseunit {
+    color: red;
+}

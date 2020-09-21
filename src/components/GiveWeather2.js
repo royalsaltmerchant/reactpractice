@@ -10,15 +10,16 @@ class GiveWeather2 extends React.Component {
         this.state = {
             tog: 'off',
             loading: false,
-            buttontext: 'Get Weather'
+            buttontext: 'Get Weather',
+            unitprompt: false
         }
     this.myClick = this.myClick.bind(this)
-    this.onChangeValue = this.onChangeValue.bind(this)
+    this.onChangeValue = this.onChangeRadio.bind(this)
     }
 //
 
 //events
-onChangeValue(event) {
+onChangeRadio(event) {
     console.log(event.target.value)
     if(event.target.value === 'fahrenheit') {
         url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&units=imperial&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
@@ -26,18 +27,30 @@ onChangeValue(event) {
     else if(event.target.value === 'celsius') {
         url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&units=metric&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
     }
-    else {
+    else if(event.target.value === 'kelvin') {
         url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
     }
 }
 
 myClick() {
     console.log(this.state.tog)
-    if(this.state.tog === "off") {
+
+    if(this.state.unitprompt === false) {
+        this.setState({
+            unitprompt: true
+        })
+    }
+    else if (this.state.unitprompt === true & url !== '') {
+        this.setState({
+            unitprompt: false
+        })
+    }
+
+    if(this.state.tog === "off" && url !== '') {
         this.setState({
             tog: 'on',
             loading: true,
-            buttontext: 'Stop Weather'
+            buttontext: 'Stop Weather',
         })
         fetch(url)
             .then(response => response.json())
@@ -74,19 +87,23 @@ myClick() {
 
                 })
             })
+
     } else if (this.state.tog === 'on') {
         this.setState({
             tog: 'off',
-            buttontext: 'Get Weather'
+            buttontext: 'Get Weather',
+            unitprompt: false
         })
     }
 }
 //end of events
 //Render
     render() {
-
+//prereturn
         var imgurl = 'http://openweathermap.org/img/wn/' + this.state.weathericon + '@2x.png';
-
+        let chooseunit = {
+            display: 'none'
+        }
         let toggleStyle = {
             display: 'none'
         }
@@ -94,23 +111,33 @@ myClick() {
             display: 'none',
         }
 
+        if(this.state.unitprompt === true) {
+            chooseunit = {
+                display: 'block'
+            }
+        }
+
         if(this.state.loading === true) {
             loadinginfo = {
                 display: 'block'
             }
         }
-        else if(this.state.tog === "on") {
+        else if(this.state.tog === "on" && url !== '') {
             toggleStyle = {
                 display: 'flex'
             }
+
         }
+//end prereturn
+//return
         return (
             <div>
                 
                 <div className="buttoning">
                 <button onClick={this.myClick}>{this.state.buttontext}</button>
                 <br/>
-                <div className="radiounits" onChange={this.onChangeValue}>
+                
+                <div className="radiounits" onChange={this.onChangeRadio}>
                     <div>
                     <label htmlFor="fahrenheit">Fahrenheit</label>
                         <input type="radio" name="units" value="fahrenheit"> 
@@ -126,6 +153,7 @@ myClick() {
                         <input type="radio" name="units" value="kelvin"> 
                         </input>
                     </div>
+                    <p className="chooseunit" style={chooseunit}>*Please choose a unit of measurement</p>
                 </div>
 
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
@@ -189,8 +217,9 @@ myClick() {
                         <br/> */}
                         <li className="outli">Timezone: {this.state.timezone}</li>
                         <br/>
-                        {/* <li className="outli">ID: {this.state.thisid}</li>
+                        <li className="outli">ID: {this.state.thisid}</li>
                         <br/>
+                        {/*
                         <li className="outli">Cod: {this.state.cod}</li>
                         <br/> */}
                     </ul>
@@ -200,6 +229,7 @@ myClick() {
         )
     }
 }
+//end return
 //end render
 //export
 export default GiveWeather2;
