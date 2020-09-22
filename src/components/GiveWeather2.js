@@ -1,8 +1,8 @@
 import React from 'react'
+import jsondata from './city.list.json'
 
 //main var for fetch url 
-var url = '';
-
+var url = ''
 //class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
@@ -11,27 +11,55 @@ class GiveWeather2 extends React.Component {
             tog: 'off',
             loading: false,
             buttontext: 'Get Weather',
-            unitprompt: false
+            unitprompt: false,
+            city: '1689969',
+            units: ''
         }
     this.myClick = this.myClick.bind(this)
-    this.onChangeValue = this.onChangeRadio.bind(this)
+    this.onChangeRadio = this.onChangeRadio.bind(this)
+    this.onChangeCity = this.onChangeCity.bind(this)
     }
-//
 
-//Events
+Events
 onChangeRadio(event) {
     console.log(event.target.value)
-    if(event.target.value === 'fahrenheit') {
-        url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&units=imperial&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+    if(event.target.value === 'imperial') {
+        this.setState({
+            units: 'imperial'
+        }, () => {
+            url = 'http://api.openweathermap.org/data/2.5/weather?id=' + this.state.city + '&units=' + this.state.units + '&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+            console.log(url)
+        })
     }
     else if(event.target.value === 'celsius') {
-        url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&units=metric&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+        this.setState({
+            units: 'metric'
+        }, () => {
+            url = 'http://api.openweathermap.org/data/2.5/weather?id=' + this.state.city + '&units=' + this.state.units + '&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+            console.log(url)
+        })
     }
-    else if(event.target.value === 'kelvin') {
-        url = 'http://api.openweathermap.org/data/2.5/weather?q=San%20Francisco&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+    else {
+        url = 'http://api.openweathermap.org/data/2.5/weather?id=' + this.state.city + '&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+        console.log(url)
     }
 }
 
+onChangeCity(event) {
+    let theircity = event.target.value
+    console.log(theircity)
+    // console.log(jsondata[0]['id'])
+    for(var i = 0; i < jsondata.length; i++) {
+        // console.log(jsondata[i]['name'])
+        if(theircity === jsondata[i]['name']) {
+            console.log(jsondata[i]['id'])
+            theircity = jsondata[i]['id']
+            this.setState({
+                city: theircity
+            })
+        }
+    }
+}
 myClick() {
     console.log(this.state.tog)
     console.log(this.state.unitprompt)
@@ -50,7 +78,7 @@ myClick() {
         this.setState({
             tog: 'on',
             loading: true,
-            buttontext: 'Stop Weather',
+            buttontext: 'Stop Weather'
         })
         fetch(url)
             .then(response => response.json())
@@ -137,10 +165,17 @@ myClick() {
                 <button onClick={this.myClick}>{this.state.buttontext}</button>
                 <br/>
                 
+                <div className='cityname' onChange={this.onChangeCity}>
+                    <label htmlFor="cityinput">Enter City name: </label>
+                    <textarea name="cityinput" rows="1" cols="30" defaultValue="San Francisco">
+                    </textarea>
+                    <p>*Case Sensitive</p>
+                </div>
+                <br/>
                 <div className="radiounits" onChange={this.onChangeRadio}>
                     <div>
                     <label htmlFor="fahrenheit">Fahrenheit</label>
-                        <input type="radio" name="units" value="fahrenheit"> 
+                        <input type="radio" name="units" value="imperial"> 
                         </input>
                     </div>
                     <div>
