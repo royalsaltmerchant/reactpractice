@@ -8,7 +8,7 @@ class GiveWeather2 extends React.Component {
     constructor() {
         super()
         this.state = {
-            tog: 'off',
+            toggle: 'off',
             loading: false,
             buttontext: 'Get Weather',
             unitprompt: false,
@@ -20,7 +20,7 @@ class GiveWeather2 extends React.Component {
     this.onChangeCity = this.onChangeCity.bind(this)
     }
 
-Events
+//Events
 onChangeRadio(event) {
     console.log(event.target.value)
     if(event.target.value === 'imperial') {
@@ -61,7 +61,7 @@ onChangeCity(event) {
     }
 }
 myClick() {
-    console.log(this.state.tog)
+    console.log(this.state.toggle)
     console.log(this.state.unitprompt)
     if(this.state.unitprompt === false && url === '') {
         this.setState({
@@ -74,9 +74,9 @@ myClick() {
         })
     }
 
-    if(this.state.tog === "off" && url !== '') {
+    if(this.state.toggle === "off" && url !== '') {
         this.setState({
-            tog: 'on',
+            toggle: 'on',
             loading: true,
             buttontext: 'Stop Weather'
         })
@@ -116,9 +116,9 @@ myClick() {
                 })
             })
 
-    } else if (this.state.tog === 'on') {
+    } else if (this.state.toggle === 'on') {
         this.setState({
-            tog: 'off',
+            toggle: 'off',
             buttontext: 'Get Weather',
             unitprompt: false
         })
@@ -150,7 +150,7 @@ myClick() {
                 display: 'block'
             }
         }
-        else if(this.state.tog === "on" && url !== '') {
+        else if(this.state.toggle === "on" && url !== '') {
             toggleStyle = {
                 display: 'flex'
             }
