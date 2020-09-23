@@ -2,7 +2,7 @@ import React from 'react'
 import jsondata from './city.list.json'
 
 //main var for fetch url 
-var url = ''
+let url = ''
 //class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
@@ -12,7 +12,7 @@ class GiveWeather2 extends React.Component {
             loading: false,
             buttontext: 'Get Weather',
             unitprompt: false,
-            city: '1689969',
+            city: '5391959',
             units: ''
         }
     this.myClick = this.myClick.bind(this)
@@ -27,7 +27,7 @@ onChangeRadio(event) {
         this.setState({
             units: 'imperial'
         }, () => {
-            url = 'http://api.openweathermap.org/data/2.5/weather?id=' + this.state.city + '&units=' + this.state.units + '&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+            url = `http://api.openweathermap.org/data/2.5/weather?id=${this.state.city}&units=${this.state.units}&appid=6b04193aa2d1531aa6072e2ba7eca3c8`
             console.log(url)
         })
     }
@@ -35,12 +35,12 @@ onChangeRadio(event) {
         this.setState({
             units: 'metric'
         }, () => {
-            url = 'http://api.openweathermap.org/data/2.5/weather?id=' + this.state.city + '&units=' + this.state.units + '&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+            url = `http://api.openweathermap.org/data/2.5/weather?id=${this.state.city}&units=${this.state.units}&appid=6b04193aa2d1531aa6072e2ba7eca3c8`
             console.log(url)
         })
     }
     else {
-        url = 'http://api.openweathermap.org/data/2.5/weather?id=' + this.state.city + '&appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+        url = `http://api.openweathermap.org/data/2.5/weather?id=${this.state.city}&appid=6b04193aa2d1531aa6072e2ba7eca3c8`
         console.log(url)
     }
 }
@@ -83,6 +83,7 @@ myClick() {
         fetch(url)
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 this.setState({
                     loading: false,
                     name: [data['name']],
@@ -196,7 +197,7 @@ myClick() {
 
                 <div style={toggleStyle}>
                 <ul className="outer">
-                        <li className="outli">Name: {this.state.name}</li>
+                        <li className="outli">{this.state.name} {this.state.syscountry}</li>
                         <br/>
                         <li className="outli">Coordinates: 
                         <ul className="inner">
@@ -207,8 +208,8 @@ myClick() {
                         <br/>
                         <li className="outli">Weather: 
                         <ul className="inner">
-                            <li>ID: {this.state.weatherid}</li>
-                            <li>Main: {this.state.weathermain}</li>
+                            {/* <li>ID: {this.state.weatherid}</li> */}
+                            {/* <li>Main: {this.state.weathermain}</li> */}
                             <li>Description: {this.state.weatherdescription}</li>
                             <li><img src={imgurl} alt="icon"></img></li>
                         </ul>
@@ -216,10 +217,10 @@ myClick() {
                         <br/>
                         <li className="outli">Temperature: 
                         <ul className="inner">
-                            <li>Temp: {this.state.maintemp}</li>
-                            <li>Feels_Like: {this.state.mainfeelslike}</li>
-                            <li>Temp_Min: {this.state.maintempmin}</li>
-                            <li>Temp_Max: {this.state.maintempmax}</li>
+                            <li className="maintemperature">{this.state.maintemp}°</li>
+                            <li>Feels_Like: {this.state.mainfeelslike}°</li>
+                            <li>Temp_Min: {this.state.maintempmin}°</li>
+                            <li>Temp_Max: {this.state.maintempmax}°</li>
                             <li>Pressure: {this.state.mainpressure}</li>
                             <li>Humdity: {this.state.mainhumidity}</li>
                         </ul>
@@ -239,8 +240,8 @@ myClick() {
                             <li>All: {this.state.cloudsall}</li>
                         </ul>
                         </li>
-                        <br/>
-                        {/* <li className="outli">Sys: 
+                        {/* <br/>
+                        <li className="outli">Sys: 
                         <ul className="inner">
                             <li>Type: {this.state.systype}</li>
                             <li>ID: {this.state.sysid}</li>
@@ -249,12 +250,11 @@ myClick() {
                             <li>Sunset: {this.state.syssunset}</li>
                         </ul>
                         </li>
-                        <br/> */}
+                        <br/>
                         <li className="outli">Timezone: {this.state.timezone}</li>
                         <br/>
                         <li className="outli">ID: {this.state.thisid}</li>
                         <br/>
-                        {/*
                         <li className="outli">Cod: {this.state.cod}</li>
                         <br/> */}
                     </ul>
