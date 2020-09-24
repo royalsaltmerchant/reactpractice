@@ -25,7 +25,23 @@ button {
     align-items: center;
 }
 
+.maindiv {
+    font-family: sans-serif;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
 .outer {
+    border: #333 2px solid;
+    border-radius: 40px;
+    padding:10px;
+    background-color:rgb(179, 233, 233);
+    list-style-type: none;
+    text-align: center;
+}
+
+/* .outer {
     display:flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -35,19 +51,24 @@ button {
     border:#333 2px solid;
     border-radius: 40px;
     padding:10px;
-}
+} */
 
 .inner {
     color:purple;
+    list-style-type: none;
 }
 
-.outli {
+/* .outli {
     padding: 15px;
     list-style-type: none;
     background-color:rgb(179, 233, 233);
     border:#333 2px solid;
     border-radius: 40px;
     margin: 10px;
+} */
+
+.name {
+    font-size: 30px;
 }
 
 .loadinginfo {
