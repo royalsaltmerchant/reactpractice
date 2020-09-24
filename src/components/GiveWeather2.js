@@ -3,6 +3,8 @@ import jsondata from './city.list.json'
 
 //url function
 let url = ''
+let urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+
 //class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
@@ -27,7 +29,7 @@ onChangeRadio(event) {
         this.setState({
             units: 'imperial'
         }, () => {
-           url = `http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8&id=${this.state.city}&units=${this.state.units}`
+           url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
             console.log(url)
         })
     }
@@ -35,30 +37,29 @@ onChangeRadio(event) {
         this.setState({
             units: 'metric'
         }, () => {
-            url = `http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8&id=${this.state.city}&units=${this.state.units}`
-            console.log(url)
+            url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
         })
     }
     else {
-        url = `http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8&id=${this.state.city}`
+        url = urlbase + `&id=${this.state.city}`
         console.log(url)
     }
 }
 
 onChangeCity(event) {
-    let theircity = event.target.value
-    console.log(theircity)
+    let theirCity = event.target.value
+    console.log(theirCity)
     // console.log(jsondata[0]['id'])
     for(var i = 0; i < jsondata.length; i++) {
         // console.log(jsondata[i]['name'])
-        if(theircity === jsondata[i]['name']) {
+        if(theirCity === jsondata[i]['name']) {
             console.log(jsondata[i]['id'])
-            theircity = jsondata[i]['id']
+            theirCity = jsondata[i]['id']
             this.setState({
-                city: theircity
+                city: theirCity
             }, () => {
-                url = `http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8&id=${this.state.city}&units=${this.state.units}`
-                console.log(this.state.city)
+                url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
+                console.log(url)
             })
         }
     }
