@@ -1,8 +1,10 @@
 import React from 'react'
 import jsondata from './city.list.json'
 
-//main var for fetch url 
+//url function
 let url = ''
+let urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+
 //class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
@@ -27,7 +29,7 @@ onChangeRadio(event) {
         this.setState({
             units: 'imperial'
         }, () => {
-            url = `http://api.openweathermap.org/data/2.5/weather?id=${this.state.city}&units=${this.state.units}&appid=6b04193aa2d1531aa6072e2ba7eca3c8`
+           url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
             console.log(url)
         })
     }
@@ -35,27 +37,29 @@ onChangeRadio(event) {
         this.setState({
             units: 'metric'
         }, () => {
-            url = `http://api.openweathermap.org/data/2.5/weather?id=${this.state.city}&units=${this.state.units}&appid=6b04193aa2d1531aa6072e2ba7eca3c8`
-            console.log(url)
+            url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
         })
     }
     else {
-        url = `http://api.openweathermap.org/data/2.5/weather?id=${this.state.city}&appid=6b04193aa2d1531aa6072e2ba7eca3c8`
+        url = urlbase + `&id=${this.state.city}`
         console.log(url)
     }
 }
 
 onChangeCity(event) {
-    let theircity = event.target.value
-    console.log(theircity)
+    let theirCity = event.target.value
+    console.log(theirCity)
     // console.log(jsondata[0]['id'])
     for(var i = 0; i < jsondata.length; i++) {
         // console.log(jsondata[i]['name'])
-        if(theircity === jsondata[i]['name']) {
+        if(theirCity === jsondata[i]['name']) {
             console.log(jsondata[i]['id'])
-            theircity = jsondata[i]['id']
+            theirCity = jsondata[i]['id']
             this.setState({
-                city: theircity
+                city: theirCity
+            }, () => {
+                url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
+                console.log(url)
             })
         }
     }
@@ -63,7 +67,7 @@ onChangeCity(event) {
 myClick() {
     console.log(this.state.toggle)
     console.log(this.state.unitprompt)
-    if(this.state.unitprompt === false && url === '') {
+    if(this.state.unitprompt === false && this.state.units === '') {
         this.setState({
             unitprompt: true
         })
@@ -74,16 +78,16 @@ myClick() {
         })
     }
 
-    if(this.state.toggle === "off" && url !== '') {
+    if(this.state.toggle === "off" && url !== '' && this.state.units !== '') {
         this.setState({
             toggle: 'on',
             loading: true,
             buttontext: 'Stop Weather'
-        })
-        fetch(url)
+        },
+        () => {fetch(url)
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                // console.log(data)
                 this.setState({
                     loading: false,
                     name: [data['name']],
@@ -116,6 +120,7 @@ myClick() {
 
                 })
             })
+        })
 
     } else if (this.state.toggle === 'on') {
         this.setState({
@@ -195,27 +200,18 @@ myClick() {
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
                 </div>
 
-                <div style={toggleStyle}>
+                <div className="maindiv" style={toggleStyle}>
                 <ul className="outer">
-                        <li className="outli">{this.state.name} {this.state.syscountry}</li>
+                        <li className="name"><p>{this.state.name}</p><p>{this.state.syscountry}</p></li>
                         <br/>
-                        <li className="outli">Coordinates: 
+                        {/* <li className="coordinates">Coordinates: 
                         <ul className="inner">
                             <li>longitude: {this.state.coordlon}</li>
                             <li>Latitude: {this.state.coordlat}</li>
                         </ul>
-                        </li>
+                        </li> */}
                         <br/>
-                        <li className="outli">Weather: 
-                        <ul className="inner">
-                            {/* <li>ID: {this.state.weatherid}</li> */}
-                            {/* <li>Main: {this.state.weathermain}</li> */}
-                            <li>Description: {this.state.weatherdescription}</li>
-                            <li><img src={imgurl} alt="icon"></img></li>
-                        </ul>
-                        </li>
-                        <br/>
-                        <li className="outli">Temperature: 
+                        <li className="temperature">Temperature: 
                         <ul className="inner">
                             <li className="maintemperature">{this.state.maintemp}°</li>
                             <li>Feels_Like: {this.state.mainfeelslike}°</li>
@@ -226,20 +222,29 @@ myClick() {
                         </ul>
                         </li>
                         <br/>
-                        <li className="outli">Visibility: {this.state.visibility}</li>
+                        <li className="weather">Current Weather Pattern
+                        <ul className="inner">
+                            {/* <li>ID: {this.state.weatherid}</li> */}
+                            {/* <li>Main: {this.state.weathermain}</li> */}
+                            <li>{this.state.weatherdescription}</li>
+                            <li><img src={imgurl} alt="icon"></img></li>
+                        </ul>
+                        </li>
                         <br/>
-                        <li className="outli">Wind: 
+                        {/* <li className="visibility">Visibility: {this.state.visibility}</li>
+                        <br/> */}
+                        {/* <li className="wind">Wind: 
                         <ul className="inner">
                             <li>Speed: {this.state.windspeed}</li>
                             <li>Deg: {this.state.winddeg}</li>
                         </ul>
-                        </li>
-                        <br/>
-                        <li className="outli">Clouds: 
+                        </li> */}
+                        {/* <br/>
+                        <li className="clouds">Clouds: 
                         <ul className="inner">
                             <li>All: {this.state.cloudsall}</li>
                         </ul>
-                        </li>
+                        </li> */}
                         {/* <br/>
                         <li className="outli">Sys: 
                         <ul className="inner">
