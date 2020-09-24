@@ -57,3 +57,7 @@ button {
 .chooseunitstyle {
     color: red;
 }
+
+.maintemperature {
+    font-size: 30px;
+}
