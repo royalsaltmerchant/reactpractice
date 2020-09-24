@@ -1,7 +1,7 @@
 import React from 'react'
 import jsondata from './city.list.json'
 
-//url function
+//url
 let url = ''
 let urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
 
