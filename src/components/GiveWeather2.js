@@ -1,10 +1,12 @@
 import React from 'react'
 import jsondata from './city.list.json'
+import countryCodeData from './countrycode.json'
 
-//url
+//url `&units=${this.state.units}&id=${this.state.city}`
 let url = ''
 let urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
-
+let myCountry = ''
+let myCity = ''
 //class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
@@ -20,6 +22,8 @@ class GiveWeather2 extends React.Component {
     this.myClick = this.myClick.bind(this)
     this.onChangeRadio = this.onChangeRadio.bind(this)
     this.onChangeCity = this.onChangeCity.bind(this)
+    this.onChangeCountry = this.onChangeCountry.bind(this)
+    this.getId = this.getId.bind(this)
     }
 
 //Events
@@ -28,43 +32,50 @@ onChangeRadio(event) {
     if(event.target.value === 'imperial') {
         this.setState({
             units: 'imperial'
-        }, () => {
-           url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
-            console.log(url)
         })
     }
     else if(event.target.value === 'celsius') {
         this.setState({
             units: 'metric'
-        }, () => {
-            url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
         })
     }
-    else {
-        url = urlbase + `&id=${this.state.city}`
-        console.log(url)
-    }
 }
-
 onChangeCity(event) {
     let theirCity = event.target.value
     console.log(theirCity)
-    // console.log(jsondata[0]['id'])
     for(var i = 0; i < jsondata.length; i++) {
-        // console.log(jsondata[i]['name'])
         if(theirCity === jsondata[i]['name']) {
-            console.log(jsondata[i]['id'])
-            theirCity = jsondata[i]['id']
+            myCity = jsondata[i]['name']
+            console.log(myCity)
+        }
+    }
+}
+onChangeCountry(event) {
+    let theirCountry = event.target.value
+    console.log(theirCountry)
+    for(var j = 0; j < countryCodeData.length; j++) {
+        if(theirCountry === countryCodeData[j]["name"]) {
+            myCountry = countryCodeData[j]["code"]
+            console.log(myCountry)
+        }
+    }
+}
+getId() {
+    let cityId = ''
+    for(var i = 0; i < jsondata.length; i++) {
+        if(myCountry === jsondata[i]['country'] && myCity === jsondata[i]['name']) {
+            cityId = jsondata[i]['id']
+            console.log(cityId)
             this.setState({
-                city: theirCity
+                city: cityId
             }, () => {
-                url = urlbase + `&units=${this.state.units}&id=${this.state.city}`
-                console.log(url)
+                url = urlbase + `&id=${this.state.city}&units=${this.state.units}`
             })
         }
     }
 }
 myClick() {
+    this.getId()
     console.log(this.state.toggle)
     console.log(this.state.unitprompt)
     if(this.state.unitprompt === false && this.state.units === '') {
@@ -153,7 +164,7 @@ myClick() {
 
         if(this.state.loading === true) {
             loadinginfo = {
-                display: 'block'
+                display: 'flex'
             }
         }
         else if(this.state.toggle === "on" && url !== '') {
@@ -170,10 +181,17 @@ myClick() {
                 <div className="buttoning">
                 <button onClick={this.myClick}>{this.state.buttontext}</button>
                 <br/>
-                
-                <div className='cityname' onChange={this.onChangeCity}>
-                    <label htmlFor="cityinput">Enter City name: </label>
+                </div>
+                <div className='form' onChange={this.onChangeCity}>
+                    <label htmlFor="cityinput">City Name: </label>
                     <textarea name="cityinput" rows="1" cols="30" defaultValue="San Francisco">
+                    </textarea>
+                    <p>*Case Sensitive</p>
+                </div>
+                <br/>
+                <div className='form' onChange={this.onChangeCountry}>
+                    <label htmlFor="countryinput">Country Name: </label>
+                    <textarea name="countryinput" rows="1" cols="30" defaultValue="United States">
                     </textarea>
                     <p>*Case Sensitive</p>
                 </div>
@@ -198,7 +216,6 @@ myClick() {
                 </div>
 
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
-                </div>
 
                 <div className="maindiv" style={toggleStyle}>
                 <ul className="outer">
