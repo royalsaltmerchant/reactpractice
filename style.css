@@ -41,31 +41,22 @@ button {
     text-align: center;
 }
 
-/* .outer {
-    display:flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+.form {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background-color:rgb(255, 245, 203);
-    border:#333 2px solid;
-    border-radius: 40px;
-    padding:10px;
-} */
+}
+
+.radiounits {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .inner {
     color:purple;
     list-style-type: none;
 }
-
-/* .outli {
-    padding: 15px;
-    list-style-type: none;
-    background-color:rgb(179, 233, 233);
-    border:#333 2px solid;
-    border-radius: 40px;
-    margin: 10px;
-} */
 
 .name {
     font-size: 30px;
@@ -73,6 +64,9 @@ button {
 
 .loadinginfo {
     font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .chooseunitstyle {
