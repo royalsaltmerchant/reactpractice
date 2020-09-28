@@ -27,7 +27,6 @@ class GiveWeather2 extends React.Component {
     this.onChangeCountry = this.onChangeCountry.bind(this)
     this.onChangeState = this.onChangeState.bind(this)
     this.getId = this.getId.bind(this)
-    this.generateUrl = this.generateUrl.bind(this)
     }
 
 //Events
