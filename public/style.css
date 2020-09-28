@@ -8,7 +8,7 @@ body {
     list-style-type: none;
 }
 
-button {
+.getweather {
     width:200px;
     height: 50px;
     border-width:5px;
@@ -17,7 +17,7 @@ button {
     text-shadow: 2px 2px rgb(153, 155, 136);
 }
 
-.buttoning {
+.getweatherdiv {
     display:flex;
     flex-direction: column;
     justify-content: center;
@@ -75,4 +75,11 @@ button {
 
 .maintemperature {
     font-size: 30px;
+}
+
+.example {
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }

@@ -1,12 +1,14 @@
 import React from 'react'
 import jsondata from './city.list.json'
 import countryCodeData from './countrycode.json'
+import stateCodeData from './statecode.json'
 
 //url `&units=${this.state.units}&id=${this.state.city}`
 let url = ''
 let urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
 let myCountry = ''
 let myCity = ''
+let myState = ''
 //class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
@@ -23,7 +25,9 @@ class GiveWeather2 extends React.Component {
     this.onChangeRadio = this.onChangeRadio.bind(this)
     this.onChangeCity = this.onChangeCity.bind(this)
     this.onChangeCountry = this.onChangeCountry.bind(this)
+    this.onChangeState = this.onChangeState.bind(this)
     this.getId = this.getId.bind(this)
+    this.generateUrl = this.generateUrl.bind(this)
     }
 
 //Events
@@ -60,10 +64,20 @@ onChangeCountry(event) {
         }
     }
 }
+onChangeState(event) {
+    let theirState = event.target.value
+    console.log(theirState)
+    for(var y = 0; y < stateCodeData.length; y++) {
+        if(theirState === stateCodeData[y]["name"]) {
+            myState = stateCodeData[y]["abbreviation"]
+            console.log(myState)
+        }
+    }
+}
 getId() {
     let cityId = ''
     for(var i = 0; i < jsondata.length; i++) {
-        if(myCountry === jsondata[i]['country'] && myCity === jsondata[i]['name']) {
+        if(myCountry === jsondata[i]['country'] && myCity === jsondata[i]['name'] && myState === jsondata[i]['state']) {
             cityId = jsondata[i]['id']
             console.log(cityId)
             this.setState({
@@ -72,10 +86,9 @@ getId() {
                 url = urlbase + `&id=${this.state.city}&units=${this.state.units}`
             })
         }
-    }
+    } 
 }
 myClick() {
-    this.getId()
     console.log(this.state.toggle)
     console.log(this.state.unitprompt)
     if(this.state.unitprompt === false && this.state.units === '') {
@@ -178,20 +191,27 @@ myClick() {
         return (
             <div>
                 
-                <div className="buttoning">
-                <button onClick={this.myClick}>{this.state.buttontext}</button>
+                <div className="getweatherdiv">
+                <button className="getweather" onClick={this.myClick}>{this.state.buttontext}</button>
                 <br/>
                 </div>
+                <p className="example">Example:</p>
+                <p className="example">San Francisco: United States: California</p>
                 <div className='form' onChange={this.onChangeCity}>
                     <label htmlFor="cityinput">City Name: </label>
-                    <textarea name="cityinput" rows="1" cols="30" defaultValue="San Francisco">
+                    <textarea name="cityinput" rows="1" cols="30">
                     </textarea>
-                    <p>*Case Sensitive</p>
                 </div>
                 <br/>
                 <div className='form' onChange={this.onChangeCountry}>
                     <label htmlFor="countryinput">Country Name: </label>
-                    <textarea name="countryinput" rows="1" cols="30" defaultValue="United States">
+                    <textarea name="countryinput" rows="1" cols="30">
+                    </textarea>
+                </div>
+                <br/>
+                <div className='form' onChange={this.onChangeState}>
+                    <label htmlFor="stateinput">State Name: </label>
+                    <textarea name="stateinput" rows="1" cols="30">
                     </textarea>
                     <p>*Case Sensitive</p>
                 </div>
