@@ -35,11 +35,15 @@ onChangeRadio(event) {
     if(event.target.value === 'imperial') {
         this.setState({
             units: 'imperial'
+        }, () => {
+            this.getId()
         })
     }
     else if(event.target.value === 'celsius') {
         this.setState({
             units: 'metric'
+        }, () => {
+            this.getId()
         })
     }
 }
@@ -50,6 +54,7 @@ onChangeCity(event) {
         if(theirCity === jsondata[i]['name']) {
             myCity = jsondata[i]['name']
             console.log(myCity)
+            this.getId()
         }
     }
 }
@@ -60,6 +65,7 @@ onChangeCountry(event) {
         if(theirCountry === countryCodeData[j]["name"]) {
             myCountry = countryCodeData[j]["code"]
             console.log(myCountry)
+            this.getId()
         }
     }
 }
@@ -69,6 +75,7 @@ onChangeState(event) {
     for(var y = 0; y < stateCodeData.length; y++) {
         if(theirState === stateCodeData[y]["name"]) {
             myState = stateCodeData[y]["abbreviation"]
+            this.getId()
             console.log(myState)
         }
     }
@@ -88,7 +95,6 @@ getId() {
     } 
 }
 myClick() {
-    this.getId()
     console.log(this.state.toggle)
     console.log(this.state.unitprompt)
     if(this.state.unitprompt === false && this.state.units === '') {
