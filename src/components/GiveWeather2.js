@@ -166,7 +166,10 @@ myClick() {
             display: 'none'
         }
         let loadinginfo = {
-            display: 'none',
+            display: 'none'
+        }
+        let inputInfo = {
+            display: ''
         }
 
         if(this.state.unitprompt === true) {
@@ -174,13 +177,17 @@ myClick() {
                 display: 'block'
             }
         }
-
         if(this.state.loading === true) {
             loadinginfo = {
                 display: 'flex'
             }
         }
-        else if(this.state.toggle === "on" && url !== '') {
+        if(this.state.buttontext === 'Stop Weather') {
+            inputInfo = {
+                display: 'none'
+            }
+        }
+        if(this.state.toggle === "on" && url !== '') {
             toggleStyle = {
                 display: 'flex'
             }
@@ -195,6 +202,7 @@ myClick() {
                 <button className="getweather" onClick={this.myClick}>{this.state.buttontext}</button>
                 <br/>
                 </div>
+                <div className="inputinfo" style={inputInfo}>
                 <p className="example">Example:</p>
                 <p className="example">San Francisco: United States: California</p>
                 <div className='form' onChange={this.onChangeCity}>
@@ -234,13 +242,12 @@ myClick() {
                     </div>
                     <p className="chooseunitstyle" style={chooseunit}>*Please choose a unit of measurement</p>
                 </div>
-
+                </div>
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
 
                 <div className="maindiv" style={toggleStyle}>
                 <ul className="outer">
-                        <li className="name"><p>{this.state.name}</p><p>{this.state.syscountry}</p></li>
-                        <br/>
+        <li className="name"><p>{this.state.name}</p><p>{this.state.syscountry}</p><p>{myState}</p></li>
                         {/* <li className="coordinates">Coordinates: 
                         <ul className="inner">
                             <li>longitude: {this.state.coordlon}</li>
@@ -248,7 +255,7 @@ myClick() {
                         </ul>
                         </li> */}
                         <br/>
-                        <li className="temperature">Temperature: 
+                        <li className="temperature"> 
                         <ul className="inner">
                             <li className="maintemperature">{this.state.maintemp}°</li>
                             <li>Feels_Like: {this.state.mainfeelslike}°</li>
@@ -259,7 +266,7 @@ myClick() {
                         </ul>
                         </li>
                         <br/>
-                        <li className="weather">Current Weather Pattern
+                        <li className="weather">
                         <ul className="inner">
                             {/* <li>ID: {this.state.weatherid}</li> */}
                             {/* <li>Main: {this.state.weathermain}</li> */}
