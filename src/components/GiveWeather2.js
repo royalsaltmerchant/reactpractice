@@ -88,6 +88,7 @@ getId() {
     } 
 }
 myClick() {
+    this.getId()
     console.log(this.state.toggle)
     console.log(this.state.unitprompt)
     if(this.state.unitprompt === false && this.state.units === '') {
