@@ -1,4 +1,5 @@
 import React from 'react'
+import Select from 'react-select'
 import jsondata from './city.list.json'
 import countryCodeData from './countrycode.json'
 import stateCodeData from './statecode.json'
@@ -19,7 +20,9 @@ class GiveWeather2 extends React.Component {
             buttontext: 'Get Weather',
             unitprompt: false,
             city: '5391959',
-            units: ''
+            units: '',
+            countrySelect: '',
+            stateSelect: '',
         }
     this.myClick = this.myClick.bind(this)
     this.onChangeRadio = this.onChangeRadio.bind(this)
@@ -59,26 +62,24 @@ onChangeCity(event) {
     }
 }
 onChangeCountry(event) {
-    let theirCountry = event.target.value
-    console.log(theirCountry)
-    for(var j = 0; j < countryCodeData.length; j++) {
-        if(theirCountry === countryCodeData[j]["name"]) {
-            myCountry = countryCodeData[j]["code"]
-            console.log(myCountry)
-            this.getId()
-        }
-    }
+    console.log(event)
+    this.setState({
+        countrySelect: event
+    }, () => {
+        myCountry = event.value
+        console.log(myCountry)
+        this.getId()
+    })
 }
 onChangeState(event) {
-    let theirState = event.target.value
-    console.log(theirState)
-    for(var y = 0; y < stateCodeData.length; y++) {
-        if(theirState === stateCodeData[y]["name"]) {
-            myState = stateCodeData[y]["abbreviation"]
-            this.getId()
-            console.log(myState)
-        }
-    }
+    console.log(event)
+    this.setState({
+        stateSelect: event
+    }, () => {
+        myState = event.value
+        console.log(myState)
+        this.getId()
+    })
 }
 getId() {
     let cityId = ''
@@ -217,17 +218,14 @@ myClick() {
                     </textarea>
                 </div>
                 <br/>
-                <div className='form' onChange={this.onChangeCountry}>
+                <div className="form">
                     <label htmlFor="countryinput">Country Name: </label>
-                    <textarea name="countryinput" rows="1" cols="30">
-                    </textarea>
+                    <Select name="countryinput" value={this.state.countrySelect} onChange={this.onChangeCountry} options={countryCodeData}/>
                 </div>
                 <br/>
-                <div className='form' onChange={this.onChangeState}>
+                <div className='form'>
                     <label htmlFor="stateinput">State Name: </label>
-                    <textarea name="stateinput" rows="1" cols="30">
-                    </textarea>
-                    <p>*Case Sensitive</p>
+                    <Select name="stateinput" value={this.state.stateSelect} onChange={this.onChangeState} options={stateCodeData}/>
                 </div>
                 <br/>
                 <div className="radiounits" onChange={this.onChangeRadio}>
