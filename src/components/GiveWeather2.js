@@ -1,15 +1,11 @@
 import React from 'react'
 import Select from 'react-select'
-import jsondata from './city.list.json'
 import countryCodeData from './countrycode.json'
 import stateCodeData from './statecode.json'
 
-//url `&units=${this.state.units}&id=${this.state.city}`
-let url = ''
-let urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
-let myCountry = ''
-let myCity = ''
-let myState = ''
+//url
+const urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+const googleUrlBase = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCkzZnIUzlDVDEJ-aOKjOcKTPNLBdpGQHY&address='
 //class and bind
 class GiveWeather2 extends React.Component {
     constructor() {
@@ -23,52 +19,41 @@ class GiveWeather2 extends React.Component {
             units: '',
             countrySelect: '',
             stateSelect: '',
+            googleUrl: '',
+            myCity: '',
+            myCountry: '',
+            myState: '',
+            googleLat: '',
+            googleLon: '',
+            url: '',
         }
     this.myClick = this.myClick.bind(this)
     this.onChangeRadio = this.onChangeRadio.bind(this)
     this.onChangeCity = this.onChangeCity.bind(this)
     this.onChangeCountry = this.onChangeCountry.bind(this)
     this.onChangeState = this.onChangeState.bind(this)
-    this.getId = this.getId.bind(this)
+    this.getLonLat = this.getLonLat.bind(this)
+    this.getGoogle = this.getGoogle.bind(this)
+    this.getUrl = this.getUrl.bind(this)
     }
 
 //Events
-onChangeRadio(event) {
-    console.log(event.target.value)
-    if(event.target.value === 'imperial') {
-        this.setState({
-            units: 'imperial'
-        }, () => {
-            this.getId()
-        })
-    }
-    else if(event.target.value === 'celsius') {
-        this.setState({
-            units: 'metric'
-        }, () => {
-            this.getId()
-        })
-    }
-}
-onChangeCity(event) {
-    let theirCity = event.target.value
-    console.log(theirCity)
-    for(var i = 0; i < jsondata.length; i++) {
-        if(theirCity === jsondata[i]['name']) {
-            myCity = jsondata[i]['name']
-            console.log(myCity)
-            this.getId()
-        }
-    }
-}
 onChangeCountry(event) {
     console.log(event)
     this.setState({
         countrySelect: event
     }, () => {
-        myCountry = event.value
-        console.log(myCountry)
-        this.getId()
+        if(event !== null) {
+            this.setState({
+                myCountry: event.value
+            }, () => {
+                console.log(this.state.myCountry)
+             })
+        } else if(event === null) {
+            this.setState({
+                myCountry: null
+            })
+        }
     })
 }
 onChangeState(event) {
@@ -76,90 +61,140 @@ onChangeState(event) {
     this.setState({
         stateSelect: event
     }, () => {
-        myState = event.value
-        console.log(myState)
-        this.getId()
-    })
-}
-getId() {
-    let cityId = ''
-    for(var i = 0; i < jsondata.length; i++) {
-        if(myCountry === jsondata[i]['country'] && myCity === jsondata[i]['name'] && myState === jsondata[i]['state']) {
-            cityId = jsondata[i]['id']
-            console.log(cityId)
+        if(event !== null) {
             this.setState({
-                city: cityId
+                myState: event.value
             }, () => {
-                url = urlbase + `&id=${this.state.city}&units=${this.state.units}`
+                console.log(this.state.myState)
             })
         }
-    } 
+    })
+}
+onChangeCity(event) {
+    this.setState({
+        myCity: event.target.value
+    }, () => {
+        console.log(this.state.myCity)
+    })
+}
+onChangeRadio(event) {
+    console.log(event.target.value)
+    if(event.target.value === 'imperial') {
+        this.setState({
+            units: 'imperial'
+        })
+    }
+    else if(event.target.value === 'celsius') {
+        this.setState({
+            units: 'metric'
+        })
+    }
 }
 myClick() {
+    this.getLonLat()
     console.log(this.state.toggle)
     console.log(this.state.unitprompt)
-    if(this.state.unitprompt === false && this.state.units === '') {
+}
+getLonLat() {
+    if(this.state.myState === '' && this.state.myCountry !== '') {
         this.setState({
-            unitprompt: true
+            googleUrl: `${googleUrlBase}${this.state.myCity},+${this.state.myCountry}`
+        }, () => {
+            console.log(this.state.googleUrl)
+            this.getGoogle()
         })
     }
-    else if (this.state.unitprompt === true) {
+    else if(this.state.myState !== '') {
         this.setState({
-            unitprompt: false
+            googleUrl: `${googleUrlBase}${this.state.myCity},+${this.state.myState}`
+        }, () => {
+            console.log(this.state.googleUrl)
+            this.getGoogle()
         })
     }
-
-    if(this.state.toggle === "off" && url !== '' && this.state.units !== '') {
-        this.setState({
-            toggle: 'on',
-            loading: true,
-            buttontext: 'Stop Weather'
-        },
-        () => {fetch(url)
+}
+getGoogle() {
+    fetch(this.state.googleUrl)
             .then(response => response.json())
             .then(data => {
-                // console.log(data)
                 this.setState({
-                    loading: false,
-                    name: [data['name']],
-                    coordlon: [data['coord']['lon']],
-                    coordlat: [data['coord']['lat']],
-                    weatherid: [data['weather'][0]['id']],
-                    weathermain: [data['weather'][0]['main']],
-                    weatherdescription: [data['weather'][0]['description']],
-                    weathericon: [data['weather'][0]['icon']],
-                    base: [data['base']],
-                    maintemp: [data['main']['temp']],
-                    mainfeelslike: [data['main']['feels_like']],
-                    maintempmin: [data['main']['temp_min']],
-                    maintempmax: [data['main']['temp_max']],
-                    mainpressure: [data['main']['pressure']],
-                    mainhumidity: [data['main']['humidity']],
-                    visibility: [data['visibility']],
-                    windspeed: [data['wind']['speed']],
-                    winddeg: [data['wind']['deg']],
-                    cloudsall: [data['clouds']['all']],
-                    dt: [data['dt']],
-                    systype: [data['sys']['type']],
-                    sysid: [data['sys']['id']],
-                    syscountry: [data['sys']['country']],
-                    syssunrise: [data['sys']['sunrise']],
-                    syssunset: [data['sys']['sunset']],
-                    timezone: [data['timezone']],
-                    thisid: [data['id']],
-                    cod: [data['cod']]
-
+                    googleLat: data['results'][0]['geometry']['location']['lat'],
+                    googleLon: data['results'][0]['geometry']['location']['lng']
+                }, () => {
+                    console.log(this.state.googleLat)
+                    console.log(this.state.googleLon)
+                    this.getUrl()
                 })
             })
-        })
-
-    } else if (this.state.toggle === 'on') {
-        this.setState({
-            toggle: 'off',
-            buttontext: 'Get Weather',
-            unitprompt: false
-        })
-    }
+}
+getUrl() {
+    this.setState({
+        url: `${urlbase}&lat=${this.state.googleLat}&lon=${this.state.googleLon}&units=${this.state.units}`
+    }, () => {
+        console.log(this.state.url)
+        if(this.state.unitprompt === false && this.state.units === '') {
+            this.setState({
+                unitprompt: true
+            })
+        }
+        else if (this.state.unitprompt === true) {
+            this.setState({
+                unitprompt: false
+            })
+        }
+    
+        if(this.state.toggle === "off" && this.state.url !== '' && this.state.units !== '') {
+            this.setState({
+                toggle: 'on',
+                loading: true,
+                buttontext: 'Stop Weather'
+            },
+            () => {fetch(this.state.url)
+                .then(response => response.json())
+                .then(data => {
+                    // console.log(data)
+                    this.setState({
+                        loading: false,
+                        name: [data['name']],
+                        coordlon: [data['coord']['lon']],
+                        coordlat: [data['coord']['lat']],
+                        weatherid: [data['weather'][0]['id']],
+                        weathermain: [data['weather'][0]['main']],
+                        weatherdescription: [data['weather'][0]['description']],
+                        weathericon: [data['weather'][0]['icon']],
+                        base: [data['base']],
+                        maintemp: [data['main']['temp']],
+                        mainfeelslike: [data['main']['feels_like']],
+                        maintempmin: [data['main']['temp_min']],
+                        maintempmax: [data['main']['temp_max']],
+                        mainpressure: [data['main']['pressure']],
+                        mainhumidity: [data['main']['humidity']],
+                        visibility: [data['visibility']],
+                        windspeed: [data['wind']['speed']],
+                        winddeg: [data['wind']['deg']],
+                        cloudsall: [data['clouds']['all']],
+                        dt: [data['dt']],
+                        systype: [data['sys']['type']],
+                        sysid: [data['sys']['id']],
+                        syscountry: [data['sys']['country']],
+                        syssunrise: [data['sys']['sunrise']],
+                        syssunset: [data['sys']['sunset']],
+                        timezone: [data['timezone']],
+                        thisid: [data['id']],
+                        cod: [data['cod']]
+    
+                    })
+                })
+            })
+    
+        } else if (this.state.toggle === 'on') {
+            this.setState({
+                toggle: 'off',
+                buttontext: 'Get Weather',
+                unitprompt: false
+            })
+        }
+    })
 }
 //end of events
 //Render
@@ -178,6 +213,54 @@ myClick() {
         let inputInfo = {
             display: ''
         }
+        let radioUnits = {
+            display: 'none'
+        }
+        let countryForm = {
+            display: ''
+        }
+        let stateForm = {
+            display: 'none'
+        }
+        let cityForm = {
+            display: 'none'
+        }
+        let getWeatherDiv = {
+            display: 'none'
+        }
+
+        if(this.state.myCountry === 'US') {
+            stateForm = {
+                display: 'flex'
+            }
+        } else if(this.state.myCountry === null) {
+            stateForm = {
+                display: 'none'
+            }
+        }
+        if(this.state.myCountry !== '' && this.state.myCountry !== 'US' && this.state.myCountry !== null) {
+            cityForm = {
+                display: 'flex'
+            }
+        }
+
+        else if(this.state.myState !== '' && this.state.myState !== null) {
+            cityForm = {
+                display: 'flex'
+            }
+        }
+
+        if(this.state.myCity !== '') {
+            radioUnits = {
+                display: 'flex'
+            }
+        }
+
+        if(this.state.units !== '') {
+            getWeatherDiv = {
+                display: 'flex'
+            }
+        }
 
         if(this.state.unitprompt === true) {
             chooseunit = {
@@ -194,7 +277,7 @@ myClick() {
                 display: 'none'
             }
         }
-        if(this.state.toggle === "on" && url !== '') {
+        if(this.state.toggle === "on" && this.state.url !== '') {
             toggleStyle = {
                 display: 'flex'
             }
@@ -205,30 +288,28 @@ myClick() {
         return (
             <div>
                 
-                <div className="getweatherdiv">
+                <div className="getweatherdiv" style={getWeatherDiv}>
                 <button className="getweather" onClick={this.myClick}>{this.state.buttontext}</button>
                 <br/>
                 </div>
                 <div className="inputinfo" style={inputInfo}>
-                <p className="example">Example:</p>
-                <p className="example">San Francisco: United States: California</p>
-                <div className='form' onChange={this.onChangeCity}>
+                <div className="countryform" style={countryForm}>
+                    <label htmlFor="countryinput">Country Name: </label>
+                    <Select name="countryinput" value={this.state.countrySelect} onChange={this.onChangeCountry} options={countryCodeData} isClearable={true}/>
+                </div>
+                <br/>
+                <div className='stateform' style={stateForm}>
+                    <label htmlFor="stateinput">State Name: </label>
+                    <Select name="stateinput" value={this.state.stateSelect} onChange={this.onChangeState} options={stateCodeData} isClearable={true}/>
+                </div>
+                <br/>
+                <div className='cityform' style={cityForm} onChange={this.onChangeCity}>
                     <label htmlFor="cityinput">City Name: </label>
                     <textarea name="cityinput" rows="1" cols="30">
                     </textarea>
                 </div>
                 <br/>
-                <div className="form">
-                    <label htmlFor="countryinput">Country Name: </label>
-                    <Select name="countryinput" value={this.state.countrySelect} onChange={this.onChangeCountry} options={countryCodeData}/>
-                </div>
-                <br/>
-                <div className='form'>
-                    <label htmlFor="stateinput">State Name: </label>
-                    <Select name="stateinput" value={this.state.stateSelect} onChange={this.onChangeState} options={stateCodeData}/>
-                </div>
-                <br/>
-                <div className="radiounits" onChange={this.onChangeRadio}>
+                <div className="radiounits" style={radioUnits} onChange={this.onChangeRadio}>
                     <div>
                     <label htmlFor="fahrenheit">Fahrenheit</label>
                         <input type="radio" name="units" value="imperial"> 
@@ -251,13 +332,13 @@ myClick() {
 
                 <div className="maindiv" style={toggleStyle}>
                 <ul className="outer">
-        <li className="name"><p>{this.state.name}</p><p>{this.state.syscountry}</p><p>{myState}</p></li>
-                        {/* <li className="coordinates">Coordinates: 
+        <li className="name"><p>{this.state.name}</p><p>{this.state.syscountry}</p><p>{this.state.myState}</p></li>
+                        <li className="coordinates">Coordinates: 
                         <ul className="inner">
                             <li>longitude: {this.state.coordlon}</li>
                             <li>Latitude: {this.state.coordlat}</li>
                         </ul>
-                        </li> */}
+                        </li>
                         <br/>
                         <li className="temperature"> 
                         <ul className="inner">

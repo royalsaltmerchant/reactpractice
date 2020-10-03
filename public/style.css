@@ -37,7 +37,21 @@ body {
     text-align: center;
 }
 
-.form {
+.countryform {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 300px;
+}
+
+.stateform {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    width: 300px;
+}
+
+.cityform {
     display: flex;
     flex-direction: column;
     margin: auto;
@@ -72,11 +86,4 @@ body {
 
 .maintemperature {
     font-size: 40px;
-}
-
-.example {
-    font-size: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
