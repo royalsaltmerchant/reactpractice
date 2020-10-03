@@ -14,7 +14,6 @@ class GiveWeather2 extends React.Component {
             toggle: 'off',
             loading: false,
             buttontext: 'Get Weather',
-            unitprompt: false,
             city: '5391959',
             units: '',
             countrySelect: '',
@@ -132,17 +131,6 @@ getUrl() {
         url: `${urlbase}&lat=${this.state.googleLat}&lon=${this.state.googleLon}&units=${this.state.units}`
     }, () => {
         console.log(this.state.url)
-        if(this.state.unitprompt === false && this.state.units === '') {
-            this.setState({
-                unitprompt: true
-            })
-        }
-        else if (this.state.unitprompt === true) {
-            this.setState({
-                unitprompt: false
-            })
-        }
-    
         if(this.state.toggle === "off" && this.state.url !== '' && this.state.units !== '') {
             this.setState({
                 toggle: 'on',
@@ -191,7 +179,6 @@ getUrl() {
             this.setState({
                 toggle: 'off',
                 buttontext: 'Get Weather',
-                unitprompt: false
             })
         }
     })
@@ -201,9 +188,7 @@ getUrl() {
     render() {
 //prereturn
         var imgurl = 'http://openweathermap.org/img/wn/' + this.state.weathericon + '@2x.png';
-        let chooseunit = {
-            display: 'none'
-        }
+
         let toggleStyle = {
             display: 'none'
         }
@@ -259,12 +244,6 @@ getUrl() {
         if(this.state.units !== '') {
             getWeatherDiv = {
                 display: 'flex'
-            }
-        }
-
-        if(this.state.unitprompt === true) {
-            chooseunit = {
-                display: 'block'
             }
         }
         if(this.state.loading === true) {
@@ -323,12 +302,6 @@ getUrl() {
                         <input type="radio" name="units" value="celsius"> 
                         </input>
                     </div>
-                    <div>
-                    <label htmlFor="kelvin">Kelvin</label>
-                        <input type="radio" name="units" value="kelvin"> 
-                        </input>
-                    </div>
-                    <p className="chooseunitstyle" style={chooseunit}>*Please choose a unit of measurement</p>
                 </div>
                 </div>
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
