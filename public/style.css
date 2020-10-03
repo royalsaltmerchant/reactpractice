@@ -1,7 +1,7 @@
 body {
     background-color:papayawhip;
     font-size:18px;
-    font-family: monospace;
+    font-family: Arial;
 }
 
 .getweather {
@@ -21,27 +21,12 @@ body {
     align-items: center;
 }
 
-.maindiv {
-    font-family: sans-serif;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-}
-
-.outer {
-    border: #333 2px solid;
-    border-radius: 40px;
-    padding:10px;
-    background-color:rgb(179, 233, 233);
-    list-style-type: none;
-    text-align: center;
-}
-
 .countryform {
     display: flex;
     flex-direction: column;
     margin: auto;
     width: 300px;
+    text-align: center;
 }
 
 .stateform {
@@ -49,6 +34,7 @@ body {
     flex-direction: column;
     margin: auto;
     width: 300px;
+    text-align: center;
 }
 
 .cityform {
@@ -56,6 +42,15 @@ body {
     flex-direction: column;
     margin: auto;
     width: 300px;
+    text-align: center;
+}
+
+.cityinput {
+    height: 25px;
+    width: 280px;
+    font-size: 18px;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 .radiounits {
@@ -64,8 +59,15 @@ body {
     align-items: center;
 }
 
-.inner {
-    color:purple;
+.outer {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    text-align: center;
+    border: #333 2px solid;
+    border-radius: 40px;
+    padding:20px;
+    background-color:rgb(179, 233, 233);
     list-style-type: none;
 }
 
@@ -86,4 +88,9 @@ body {
 
 .maintemperature {
     font-size: 40px;
+    color: purple;
+}
+
+.weather {
+    color: purple;
 }

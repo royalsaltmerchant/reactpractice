@@ -295,17 +295,20 @@ getUrl() {
                 <div className="inputinfo" style={inputInfo}>
                 <div className="countryform" style={countryForm}>
                     <label htmlFor="countryinput">Country Name: </label>
+                    <br/>
                     <Select name="countryinput" value={this.state.countrySelect} onChange={this.onChangeCountry} options={countryCodeData} isClearable={true}/>
                 </div>
                 <br/>
                 <div className='stateform' style={stateForm}>
                     <label htmlFor="stateinput">State Name: </label>
+                    <br/>
                     <Select name="stateinput" value={this.state.stateSelect} onChange={this.onChangeState} options={stateCodeData} isClearable={true}/>
                 </div>
                 <br/>
                 <div className='cityform' style={cityForm} onChange={this.onChangeCity}>
                     <label htmlFor="cityinput">City Name: </label>
-                    <textarea name="cityinput" rows="1" cols="30">
+                    <br/>
+                    <textarea className='cityinput' name="cityinput" rows="1" cols="30">
                     </textarea>
                 </div>
                 <br/>
@@ -331,66 +334,18 @@ getUrl() {
                 <p className="loadinginfo" style={loadinginfo}>Loading...</p>
 
                 <div className="maindiv" style={toggleStyle}>
-                <ul className="outer">
-        <li className="name"><p>{this.state.name}</p><p>{this.state.syscountry}</p><p>{this.state.myState}</p></li>
-                        <li className="coordinates">Coordinates: 
-                        <ul className="inner">
-                            <li>longitude: {this.state.coordlon}</li>
-                            <li>Latitude: {this.state.coordlat}</li>
-                        </ul>
-                        </li>
+                    <ul className="outer">
+                        <li className="name">{this.state.name}</li>
+                        <li className="name">{this.state.syscountry}</li>
+                        <li className="name">{this.state.myState}</li>
                         <br/>
-                        <li className="temperature"> 
-                        <ul className="inner">
-                            <li className="maintemperature">{this.state.maintemp}°</li>
-                            <li>Feels_Like: {this.state.mainfeelslike}°</li>
-                            <li>Temp_Min: {this.state.maintempmin}°</li>
-                            <li>Temp_Max: {this.state.maintempmax}°</li>
-                            <li>Pressure: {this.state.mainpressure}</li>
-                            <li>Humdity: {this.state.mainhumidity}</li>
-                        </ul>
-                        </li>
+                        <li className="maintemperature">{this.state.maintemp}°</li>
+                        <li>Feels_Like: {this.state.mainfeelslike}°</li>
+                        <li>Temp_Min: {this.state.maintempmin}°</li>
+                        <li>Temp_Max: {this.state.maintempmax}°</li>
                         <br/>
-                        <li className="weather">
-                        <ul className="inner">
-                            {/* <li>ID: {this.state.weatherid}</li> */}
-                            {/* <li>Main: {this.state.weathermain}</li> */}
-                            <li>{this.state.weatherdescription}</li>
-                            <li><img src={imgurl} alt="icon"></img></li>
-                        </ul>
-                        </li>
-                        <br/>
-                        {/* <li className="visibility">Visibility: {this.state.visibility}</li>
-                        <br/> */}
-                        {/* <li className="wind">Wind: 
-                        <ul className="inner">
-                            <li>Speed: {this.state.windspeed}</li>
-                            <li>Deg: {this.state.winddeg}</li>
-                        </ul>
-                        </li> */}
-                        {/* <br/>
-                        <li className="clouds">Clouds: 
-                        <ul className="inner">
-                            <li>All: {this.state.cloudsall}</li>
-                        </ul>
-                        </li> */}
-                        {/* <br/>
-                        <li className="outli">Sys: 
-                        <ul className="inner">
-                            <li>Type: {this.state.systype}</li>
-                            <li>ID: {this.state.sysid}</li>
-                            <li>Country: {this.state.syscountry}</li>
-                            <li>Sunrise: {this.state.syssunrise}</li>
-                            <li>Sunset: {this.state.syssunset}</li>
-                        </ul>
-                        </li>
-                        <br/>
-                        <li className="outli">Timezone: {this.state.timezone}</li>
-                        <br/>
-                        <li className="outli">ID: {this.state.thisid}</li>
-                        <br/>
-                        <li className="outli">Cod: {this.state.cod}</li>
-                        <br/> */}
+                        <li className="weather">{this.state.weatherdescription}</li>
+                        <li className="weather"><img src={imgurl} alt="icon"></img></li>
                     </ul>
                 </div>
                     
