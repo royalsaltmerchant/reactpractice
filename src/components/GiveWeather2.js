@@ -186,7 +186,6 @@ getUrl() {
 //end of events
 //Render
     render() {
-//prereturn
         var imgurl = 'http://openweathermap.org/img/wn/' + this.state.weathericon + '@2x.png';
 
         let toggleStyle = {
@@ -262,7 +261,6 @@ getUrl() {
             }
 
         }
-//end prereturn
 //return
         return (
             <div>
@@ -287,19 +285,20 @@ getUrl() {
                 <div className='cityform' style={cityForm} onChange={this.onChangeCity}>
                     <label htmlFor="cityinput">City Name: </label>
                     <br/>
-                    <textarea className='cityinput' name="cityinput" rows="1" cols="30">
+                    <textarea className='cityinput' name="cityinput" rows="1" cols="30" placeholder="Type City Name...">
                     </textarea>
                 </div>
                 <br/>
                 <div className="radiounits" style={radioUnits} onChange={this.onChangeRadio}>
                     <div>
-                    <label htmlFor="fahrenheit">Fahrenheit</label>
-                        <input type="radio" name="units" value="imperial"> 
+                    <label htmlFor="fahrenheit">Fahrenheit</label><br/>
+                        <input className="radiobutton" type="radio" name="units" value="imperial"> 
                         </input>
                     </div>
+                    <br/>
                     <div>
-                    <label htmlFor="celsius">Celsius</label>
-                        <input type="radio" name="units" value="celsius"> 
+                    <label htmlFor="celsius">Celsius</label><br/>
+                        <input className="radiobutton" type="radio" name="units" value="celsius"> 
                         </input>
                     </div>
                 </div>
