@@ -18,6 +18,7 @@ class GiveWeather2 extends React.Component {
             units: '',
             countrySelect: '',
             stateSelect: '',
+            citySelect: '',
             googleUrl: '',
             myCity: '',
             myCountry: '',
@@ -50,7 +51,11 @@ onChangeCountry(event) {
              })
         } else if(event === null) {
             this.setState({
-                myCountry: null
+                myCountry: '',
+                myState: '',
+                myCity: '',
+                stateSelect: null,
+                citySelect: ''
             })
         }
     })
@@ -66,11 +71,18 @@ onChangeState(event) {
             }, () => {
                 console.log(this.state.myState)
             })
+        } else if(event === null) {
+            this.setState({
+                myState: null,
+                myCity: '',
+                citySelect: '',
+            })
         }
     })
 }
 onChangeCity(event) {
     this.setState({
+        citySelect: event.target.value,
         myCity: event.target.value
     }, () => {
         console.log(this.state.myCity)
@@ -217,30 +229,24 @@ getUrl() {
             stateForm = {
                 display: 'flex'
             }
-        } else if(this.state.myCountry === null) {
-            stateForm = {
-                display: 'none'
-            }
         }
         if(this.state.myCountry !== '' && this.state.myCountry !== 'US' && this.state.myCountry !== null) {
             cityForm = {
                 display: 'flex'
             }
         }
-
-        else if(this.state.myState !== '' && this.state.myState !== null) {
+        if(this.state.myState !== '' && this.state.myState !== null) {
             cityForm = {
                 display: 'flex'
             }
         }
-
         if(this.state.myCity !== '') {
+            console.log(this.state.myCity)
             radioUnits = {
                 display: 'flex'
             }
         }
-
-        if(this.state.units !== '') {
+        if(this.state.units !== '' && this.state.myCity !== '') {
             getWeatherDiv = {
                 display: 'flex'
             }
@@ -285,7 +291,7 @@ getUrl() {
                 <div className='cityform' style={cityForm} onChange={this.onChangeCity}>
                     <label htmlFor="cityinput">City Name: </label>
                     <br/>
-                    <textarea className='cityinput' name="cityinput" rows="1" cols="30" placeholder="Type City Name...">
+                    <textarea value={this.state.citySelect} className='cityinput' name="cityinput" rows="1" cols="30" placeholder="Type City Name...">
                     </textarea>
                 </div>
                 <br/>
