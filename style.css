@@ -1,5 +1,5 @@
 body {
-    background-color:papayawhip;
+    background-image: url(./sky-1441936_1920.jpg);
     font-size:25px;
     font-family: Arial;
 }
@@ -68,7 +68,7 @@ body {
     border: #333 2px solid;
     border-radius: 40px;
     padding:20px;
-    background-color:rgb(179, 233, 233);
+    background-image: url(star-831066_1280.jpg);
     list-style-type: none;
 }
 
