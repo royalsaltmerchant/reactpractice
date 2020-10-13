@@ -240,7 +240,7 @@ getUrl() {
 }
 getLocationAuto() {
     this.setState({
-        googleLocation: googlePredictionUrlBase + '&components=country:' + this.state.myCountry + '&input=' + this.state.theirCity,
+        googleLocation: `${googlePredictionUrlBase}&components=country:${this.state.myCountry}&location=${this.state.googleStateLat},${this.state.googleStateLon}&radius=2000&input=${this.state.theirCity}`,
         predictions: []
     }, () => {
         console.log(this.state.googleLocation)
@@ -286,7 +286,7 @@ getLocationAuto() {
 //end of events
 //Render
     render() {
-        var imgurl = 'http://openweathermap.org/img/wn/' + this.state.weathericon + '@2x.png';
+        var imgurl = `http://openweathermap.org/img/wn/${this.state.weathericon}@2x.png`
 
         let toggleStyle = {
             display: 'none'
