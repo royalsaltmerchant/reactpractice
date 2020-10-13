@@ -4,7 +4,9 @@ import countryCodeData from './countrycode.json'
 import stateCodeData from './statecode.json'
 
 //url
+
 const urlbase = 'http://api.openweathermap.org/data/2.5/weather?appid=6b04193aa2d1531aa6072e2ba7eca3c8'
+const googlePredictionUrlBase = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?types=(cities)&key=AIzaSyDDWFmvc22fxUIqYAG3DNI9y9clzXbWdAY'
 const googleUrlBase = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCkzZnIUzlDVDEJ-aOKjOcKTPNLBdpGQHY&address='
 //class and bind
 class GiveWeather2 extends React.Component {
@@ -18,23 +20,29 @@ class GiveWeather2 extends React.Component {
             units: '',
             countrySelect: '',
             stateSelect: '',
-            citySelect: '',
+            citySelect: null,
             googleUrl: '',
             myCity: '',
+            theirCity: '',
             myCountry: '',
             myState: '',
             googleLat: '',
             googleLon: '',
             url: '',
+            googleLocation: '',
+            predictions: [],
+            predictionOptions: []
         }
     this.myClick = this.myClick.bind(this)
     this.onChangeRadio = this.onChangeRadio.bind(this)
-    this.onChangeCity = this.onChangeCity.bind(this)
+    this.onChangeCityA = this.onChangeCityA.bind(this)
+    this.onChangeCityB = this.onChangeCityB.bind(this)
     this.onChangeCountry = this.onChangeCountry.bind(this)
     this.onChangeState = this.onChangeState.bind(this)
     this.getLonLat = this.getLonLat.bind(this)
     this.getGoogle = this.getGoogle.bind(this)
     this.getUrl = this.getUrl.bind(this)
+    this.getLocationAuto = this.getLocationAuto.bind(this)
     }
 
 //Events
@@ -53,9 +61,9 @@ onChangeCountry(event) {
             this.setState({
                 myCountry: '',
                 myState: '',
-                myCity: '',
+                theirCity: '',
                 stateSelect: null,
-                citySelect: ''
+                citySelect: null
             })
         }
     })
@@ -67,26 +75,62 @@ onChangeState(event) {
     }, () => {
         if(event !== null) {
             this.setState({
-                myState: event.value
+                myState: event.value,
+                myStateLabel: event.label
             }, () => {
                 console.log(this.state.myState)
+                this.setState({
+                    googleUrl: googleUrlBase + this.state.myStateLabel
+                }, () => {
+                    console.log(this.state.googleUrl)
+                    fetch(this.state.googleUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data)
+                        this.setState({
+                            googleStateLat: data['results'][0]['geometry']['location']['lat'],
+                            googleStateLon: data['results'][0]['geometry']['location']['lng']
+                        }, () => {
+                            console.log(this.state.googleStateLat, this.state.googleStateLon)
+                        })
+                    })
+                })
             })
         } else if(event === null) {
             this.setState({
                 myState: null,
-                myCity: '',
-                citySelect: '',
+                theirCity: '',
+                citySelect: null,
             })
         }
     })
 }
-onChangeCity(event) {
+onChangeCityA(event) {
     this.setState({
-        citySelect: event.target.value,
-        myCity: event.target.value
+        theirCity: event.target.value
     }, () => {
-        console.log(this.state.myCity)
+        console.log(this.state.theirCity)
+        if(this.state.theirCity !== '') {
+        this.getLocationAuto()
+        } else {
+            this.setState({
+                predictionOptions: []
+            }, () => {
+                console.log(this.state.predictionOptions)
+            })
+        }
     })
+}
+onChangeCityB(event) {
+    if(event !== null) {
+        this.setState({
+            citySelect: event
+        })
+    } else {
+        this.setState({
+            citySelect: null
+        })
+    }
 }
 onChangeRadio(event) {
     console.log(event.target.value)
@@ -103,13 +147,12 @@ onChangeRadio(event) {
 }
 myClick() {
     this.getLonLat()
-    console.log(this.state.toggle)
-    console.log(this.state.unitprompt)
+    console.log(this.state.citySelect)
 }
 getLonLat() {
     if(this.state.myState === '' && this.state.myCountry !== '') {
         this.setState({
-            googleUrl: `${googleUrlBase}${this.state.myCity},+${this.state.myCountry}`
+            googleUrl: `${googleUrlBase}${this.state.citySelect.value},+${this.state.myCountry}`
         }, () => {
             console.log(this.state.googleUrl)
             this.getGoogle()
@@ -117,7 +160,7 @@ getLonLat() {
     }
     else if(this.state.myState !== '') {
         this.setState({
-            googleUrl: `${googleUrlBase}${this.state.myCity},+${this.state.myState}`
+            googleUrl: `${googleUrlBase}${this.state.citySelect.value},+${this.state.myState}`
         }, () => {
             console.log(this.state.googleUrl)
             this.getGoogle()
@@ -195,10 +238,55 @@ getUrl() {
         }
     })
 }
+getLocationAuto() {
+    this.setState({
+        googleLocation: `${googlePredictionUrlBase}&components=country:${this.state.myCountry}&location=${this.state.googleStateLat},${this.state.googleStateLon}&radius=2000&input=${this.state.theirCity}`,
+        predictions: []
+    }, () => {
+        console.log(this.state.googleLocation)
+        fetch(this.state.googleLocation)
+        .then(response => response.json())
+        .then(data => {
+            // console.log(data)
+            for(var n = 0; n < data['predictions'].length; n++) {
+                var predictions = [data['predictions'][n]['terms'][0].value]
+                // console.log(predictions)
+                this.setState({
+                    predictions: [...this.state.predictions, predictions]
+                }, () => {
+                    this.setState({
+                        predictionOptions: [
+                                {
+                                    "label": this.state.predictions[0],
+                                    "value": this.state.predictions[0]
+                                },
+                                {
+                                    "label": this.state.predictions[1],
+                                    "value": this.state.predictions[1]
+                                },
+                                {
+                                    "label": this.state.predictions[2],
+                                    "value": this.state.predictions[2]
+                                },
+                                {
+                                    "label": this.state.predictions[3],
+                                    "value": this.state.predictions[3]
+                                },
+                                {
+                                    "label": this.state.predictions[4],
+                                    "value": this.state.predictions[4]
+                                }
+                        ]
+                    })
+                })
+            }
+        })
+    })
+}
 //end of events
 //Render
     render() {
-        var imgurl = 'http://openweathermap.org/img/wn/' + this.state.weathericon + '@2x.png';
+        var imgurl = `http://openweathermap.org/img/wn/${this.state.weathericon}@2x.png`
 
         let toggleStyle = {
             display: 'none'
@@ -240,13 +328,12 @@ getUrl() {
                 display: 'flex'
             }
         }
-        if(this.state.myCity !== '') {
-            console.log(this.state.myCity)
+        if(this.state.citySelect !== null) {
             radioUnits = {
                 display: 'flex'
             }
         }
-        if(this.state.units !== '' && this.state.myCity !== '') {
+        if(this.state.units !== '' && this.state.citySelect !== null) {
             getWeatherDiv = {
                 display: 'flex'
             }
@@ -271,10 +358,6 @@ getUrl() {
         return (
             <div>
                 
-                <div className="getweatherdiv" style={getWeatherDiv}>
-                <button className="getweather" onClick={this.myClick}>{this.state.buttontext}</button>
-                <br/>
-                </div>
                 <div className="inputinfo" style={inputInfo}>
                 <div className="countryform" style={countryForm}>
                     <label htmlFor="countryinput">Country Name: </label>
@@ -288,11 +371,10 @@ getUrl() {
                     <Select name="stateinput" value={this.state.stateSelect} onChange={this.onChangeState} options={stateCodeData} isClearable={true}/>
                 </div>
                 <br/>
-                <div className='cityform' style={cityForm} onChange={this.onChangeCity}>
+                <div className='cityform' style={cityForm} onChange={this.onChangeCityA}>
                     <label htmlFor="cityinput">City Name: </label>
                     <br/>
-                    <textarea value={this.state.citySelect} className='cityinput' name="cityinput" rows="1" cols="30" placeholder="Type City Name...">
-                    </textarea>
+                    <Select name="cityinput" value={this.state.citySelect} onChange={this.onChangeCityB} options={this.state.predictionOptions} isClearable={true} placeholder="Type City Name..."/>
                 </div>
                 <br/>
                 <div className="radiounits" style={radioUnits} onChange={this.onChangeRadio}>
@@ -326,7 +408,11 @@ getUrl() {
                         <li className="weather"><img src={imgurl} alt="icon"></img></li>
                     </ul>
                 </div>
-                    
+                <br/>
+                <div className="getweatherdiv" style={getWeatherDiv}>
+                <button className="getweather" onClick={this.myClick}>{this.state.buttontext}</button>
+                <br/>
+                </div>    
             </div>
         )
     }
