@@ -296,7 +296,7 @@ getUrl() {
 //return
         return (
             <div>
-                
+                <h1>World Weather</h1>
                 <div className="inputinfo" style={inputInfo}>
                 <div className="countryform" style={countryForm}>
                     <label htmlFor="countryinput">Country Name: </label>

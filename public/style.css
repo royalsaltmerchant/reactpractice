@@ -2,6 +2,7 @@ body {
     background-image: url(./sky-1441936_1920.jpg);
     font-size:25px;
     font-family: Arial;
+    text-align: center;
 }
 
 .getweather {
