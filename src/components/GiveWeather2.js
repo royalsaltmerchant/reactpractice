@@ -116,6 +116,7 @@ onChangeCityB(event) {
         }, () => {
             console.log(this.state.citySelect)
             this.getLonLat()
+            window.scrollTo(0, 200)
         })
     } else {
         this.setState({
@@ -128,6 +129,8 @@ onChangeRadio(event) {
     if(event.target.value === 'imperial') {
         this.setState({
             units: 'imperial'
+        }, () => {
+            window.scrollTo(0, 300)
         })
     }
     else if(event.target.value === 'celsius') {
@@ -139,6 +142,7 @@ onChangeRadio(event) {
 myClick() {
     this.getLonLat()
     console.log(this.state.citySelect)
+    window.scrollTo(0, 94)
 }
 getLonLat() {
     if(this.state.myCountry !== '') {
